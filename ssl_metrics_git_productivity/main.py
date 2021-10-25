@@ -10,7 +10,7 @@ def get_args():
         prog="SSL Metrics Git Productivity",
         usage="Calculates productivity measure of a git project.",
     )
-    ap.add_argument("--jsonfile", "-j", required=True, type=open, help="...")
+    ap.add_argument("--input", "-i", required=True, type=open, help="...")
     # ap.add_argument("--graph", "-g", type=open, help="...")
 
     args = ap.parse_args()
