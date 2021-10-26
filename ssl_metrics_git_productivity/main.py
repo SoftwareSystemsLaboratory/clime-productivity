@@ -101,5 +101,5 @@ if __name__ == "__main__":
 prod per member as {author email, name}
     prod per member graphed on the same chart
 
-graphs of velocity and acceleration of prod
+graphs of acceleration of prod
 """

@@ -90,6 +90,12 @@ def plot(df: DataFrame, filename: str) -> None:
     using separate dicts so that you dont have to iterate as many times
     '''
 
+    '''TODO
+    the graphs should depict velocity = 0 when prod is at a peak
+    how to achieve??
+    regression modeling?
+    '''
+
 
 def main():
     args: Namespace = get_argparse()
