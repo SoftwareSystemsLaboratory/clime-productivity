@@ -1,8 +1,13 @@
+"""takes a loc file as an argument ...
+returns a prod file with calculated productivity"""
+
 import argparse
 import json
 from pprint import pprint as print
 
 import numpy as np
+import pandas as pd
+from pandas import DataFrame
 
 
 def get_args():
@@ -17,68 +22,82 @@ def get_args():
     return args
 
 
-def get_data(filename: str) -> list:
-    "returns data from a loc.json file"
-    with open(file=filename, mode="r") as file:
-        return json.load(file)
+def get_prod(df: DataFrame):
+    """returns the productivity of each commit as
+    prod = module_size / team effort
+    prod = delta_loc / elapsed time
+    """
+
+    te = df["day_since_0"].max()
+
+    "calculates module_size as the absolute value of delta_loc"
+    p = df["delta_loc"].apply(lambda x: abs(x) / te)
+
+    df["productivity"] = p
 
 
-def team_effort(data) -> int:
-    "returns TE as total elapsed project time"
-    return data[len(data) - 1]["day_since_0"]
+def get_velocity(df: DataFrame):
+    """returns the velocity of prod as
+    change in prod over change in time
+    calculates the sum of prod per dat since there are no hourly timestamps
+    """
 
+    daily_prod = []
+    delta_prod = []
+    prod_t1 = 0
 
-def module_size(data) -> list:
-    "returns a list of delta_loc values"
-    return [abs(commit["delta_loc"]) for commit in data]
+    delta_time = []
+    day_t1 = 0
 
+    "does days need to be sorted??"
+    days = set(df["day_since_0"])
 
-# # not needed
-# def get_hash(data) -> list:
-#     return [commit["hash"] for commit in data]
-#
-# def get_day(data) -> list:
-#     return [commit["day_since_0"] for commit in data]
+    for day in days:
+        temp = df[df["day_since_0"] == day]
+        prod = temp["productivity"].sum()
 
+        delta_prod += [prod - prod_t1 for i in range(len(temp.T.columns))]
+        prod_t1 = prod
 
-def productivity(MS: list, TE: int) -> list:
-    "calculates prod = (MS as delta loc) / TE"
-    return [float(loc / TE) for loc in MS]
+        delta_time += [day - day_t1 for i in range(len(temp.T.columns))]
+        day_t1 = day
 
+    df["delta_prod"] = delta_prod
+    df["delta_time"] = delta_time
 
-def authors(data: list) -> set:
-    "returns all known authors of a repo"
-    return set([item["author_email"] for item in data])
+    df["velocity"] = df["delta_prod"] / df["delta_time"]
 
-def write(data: list):
-    "adds the given field as key value pairs to prod.json"
+    """
+    calculations:
+        daily prod
+        change in prod
+        change in time
+        dprod / dtime
 
-    with open(file="prod.json", mode="w") as file:
-        json.dump(data, file)
+        velocity = daily velocity
+        dvelocity
+        dvelocity / dtime
+    """
 
 
 def main():
 
-    # df:DataFrame = pandas.read_json(args.input)
-    'df.to_json()'
-
-
     args = get_args()
-    data = get_data(args.input.name)
-    prod = productivity(module_size(data), team_effort(data))
 
-    for item, p in zip(data, prod):
-        item["productivity"] = p
+    df: DataFrame = pd.read_json(args.input)
+    get_prod(df)
+    get_velocity(df)
 
-    print(len(authors(data)))
-
-    write(data)
+    "transpose to look pretty"
+    "dont transpose to be effective"
+    df.to_json("prod.json")
+    # df.T.to_json("prod.json")
 
 
 if __name__ == "__main__":
     main()
 
-"""
+""" TODO
 prod per member as {author email, name}
     prod per member graphed on the same chart
 

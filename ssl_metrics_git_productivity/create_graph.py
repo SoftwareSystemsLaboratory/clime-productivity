@@ -7,6 +7,7 @@ from pprint import pprint
 from matplotlib.figure import Figure
 from pandas import DataFrame
 
+
 def get_argparse() -> Namespace:
     parser: ArgumentParser = ArgumentParser(
         prog="Convert Output",
@@ -41,45 +42,63 @@ def plot(df: DataFrame, filename: str) -> None:
     figure: Figure = plt.figure()
 
     # data extraction
-    unique_days = {day:0 for day in set(df['day_since_0'])}
+
+    days = set(df["day_since_0"])
+    unique_days = {day: 0 for day in days}
+
+    unique_days = {day: {"prod": 0, "velocity": 0} for day in days}
 
     for day in unique_days:
-        temp = df[df['day_since_0'] == day]
-        unique_days[day] = (temp.sum(axis=0)['productivity'])
+        temp = df[df["day_since_0"] == day]
+        unique_days[day]["prod"] = temp["productivity"].sum()
+        unique_days[day]["velocity"] = temp["velocity"].max()
 
+    # xticks
+    max_tick = int(max(unique_days.keys()) + 10 / 10)
+    step = int(max_tick / 10)
+    intervals = [i for i in range(0, max_tick + step, step)]
 
-    #xticks
-    max_tick = int(max(unique_days.keys())+10/10)
-    step = int(max_tick/10)
-    intervals = [i for i in range(0,max_tick+step,step)]
-
-    plt.xticks(intervals,intervals)
+    plt.xticks(intervals, intervals)
 
     # formatting
-    plt.xlim([-1,max((unique_days.keys()))+1])
+    plt.xlim([-1, max((unique_days.keys())) + 1])
     args = get_argparse()
     if args.window:
-        window = [int(x) for x in args.window.split(',')]
+        window = [int(x) for x in args.window.split(",")]
         plt.xlim(*window)
-    plt.ylim([-1,max((unique_days.values()))*1.1])
+
+    '''TODO
+    store prod sum (calculated already) in main
+    1 is a placeholder for velocity max, but one velocity value is inf
+    prod will never be negative
+    '''
+    plt.ylim([df['velocity'].min(), max(max([day['prod'] for day in unique_days.values()]) , df['velocity'].max()) * 1.1])
 
     plt.ylabel("prod")
     plt.xlabel("day_since_0")
     plt.title("Daily Productivity Sum Over Time")
 
+    plt.plot(unique_days.keys(), [day['prod'] for day in unique_days.values()], linewidth=3)
+    plt.plot(unique_days.keys(), [day['velocity'] for day in unique_days.values()], color='red', linewidth=0.75)
 
-    plt.plot(unique_days.keys(),unique_days.values())
     figure.savefig(filename)
+
+    '''TODO
+    could be organized much more efficiently
+    try in future
+        graphing straight from df
+    using separate dicts so that you dont have to iterate as many times
+    '''
 
 
 def main():
-    args:Namespace = get_argparse()
+    args: Namespace = get_argparse()
 
     if args.input[-5::] != ".json":
         print("Invalid input file type. Input file must be JSON")
         quit(1)
 
-    df:DataFrame = pandas.read_json(args.input)
+    df: DataFrame = pandas.read_json(args.input)
 
     plot(df, filename=args.output)
 
