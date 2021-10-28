@@ -67,6 +67,10 @@ def plot(df: DataFrame, filename: str) -> None:
         window = [int(x) for x in args.window.split(",")]
         plt.xlim(*window)
 
+        w_dist = window[1] - window[0]
+        intervals = [int((w_dist/10)*i + window[0]) for i in range(11)]
+        plt.xticks(intervals, intervals)
+
     '''TODO
     store prod sum (calculated already) in main
     1 is a placeholder for velocity max, but one velocity value is inf
