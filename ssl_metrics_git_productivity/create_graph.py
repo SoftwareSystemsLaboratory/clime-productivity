@@ -60,6 +60,9 @@ def plot(df: DataFrame, filename: str) -> None:
 
     plt.xticks(intervals, intervals)
 
+    '''TODO
+    fix windows in relation to xticks, yticks'''
+
     # formatting
     plt.xlim([-1, max((unique_days.keys())) + 1])
     args = get_argparse()
