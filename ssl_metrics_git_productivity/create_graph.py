@@ -72,7 +72,7 @@ def plot(df: DataFrame, filename: str) -> None:
     1 is a placeholder for velocity max, but one velocity value is inf
     prod will never be negative
     '''
-    plt.ylim([df['velocity'].min(), max(max([day['prod'] for day in unique_days.values()]) , df['velocity'].max()) * 1.1])
+    plt.ylim([df['velocity'].min()*1.1, max(max([day['prod'] for day in unique_days.values()]) , df['velocity'].max()) * 1.1])
 
     plt.ylabel("prod")
     plt.xlabel("day_since_0")
