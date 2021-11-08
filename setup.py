@@ -49,7 +49,9 @@ setup(
     ],
     python_requires=">=3.9",
     install_requires=[
-        # ADD ME
+        "numpy",
+        "matplotlib",
+        "pandas",
     ],
     entry_points={
         "console_scripts": [
