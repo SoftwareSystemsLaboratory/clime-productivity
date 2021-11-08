@@ -7,7 +7,7 @@ from pandas.core.series import Series
 
 def get_args() -> Namespace:
     ap: ArgumentParser = ArgumentParser(
-        prog="SSL Metrics Git Productivity",
+        prog="SSL Metrics Git Productivity Computer",
         usage="Calculates productivity metric of a git project.",
         description="Productivity is defined as |ΔLOC| / (Team Effort) where Team Effort is the total elapsed time between commits.",
     )
