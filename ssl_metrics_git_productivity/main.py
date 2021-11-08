@@ -25,6 +25,7 @@ def get_prod(df: DataFrame):
     df["productivity"] = p
 
 
+<<<<<<< HEAD
 def get_velocity(df: DataFrame):
     daily_prod = []
     delta_prod = []
@@ -64,6 +65,8 @@ def get_velocity(df: DataFrame):
     """
 
 
+=======
+>>>>>>> 09a32f644aa1a0e9e628d92c9d4b150e03c45dc7
 def main():
 
     args = get_args()
@@ -77,6 +80,8 @@ def main():
     df.to_json("prod.json")
     # df.T.to_json("prod.json")
 
+    output = [{'productivity':p, 'hash':h, 'day_since_0':d} for p,h,d in zip(prod,hash,days)]
+    write(output)
 
 if __name__ == "__main__":
     main()
