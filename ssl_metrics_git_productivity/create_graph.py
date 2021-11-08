@@ -1,9 +1,9 @@
 from argparse import ArgumentParser, Namespace
 from os import path
+from pprint import pprint
 
 import matplotlib.pyplot as plt
 import pandas
-from pprint import pprint
 from matplotlib.figure import Figure
 from pandas import DataFrame
 
