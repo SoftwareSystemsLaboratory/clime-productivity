@@ -1,9 +1,9 @@
 from argparse import ArgumentParser, Namespace
 from os import path
+from pprint import pprint
 
 import matplotlib.pyplot as plt
 import pandas
-from pprint import pprint
 from matplotlib.figure import Figure
 from pandas import DataFrame
 
@@ -34,63 +34,70 @@ def get_argparse() -> Namespace:
         type=str,
         required=False,
     )
+    parser.add_argument(
+        "-m",
+        "--maximum-degree-polynomial",
+        help="Estimated maximum degree of polynomial",
+        type=int,
+        required=False,
+        default=15,
+    )
     return parser.parse_args()
 
 
-# prod_sum over time where time is spaced by day
-def plot(df: DataFrame, filename: str) -> None:
-    figure: Figure = plt.figure()
+def _format_window(figure: Figure) -> None:
 
-
-    # data extraction
-    unique_days = {day:0 for day in set(df['day_since_0'])}
-
-    for day in unique_days:
-        temp = df[df['day_since_0'] == day]
-        unique_days[day] = (temp.sum(axis=0)['productivity'])
-
-
-    # xticks
+    # xticks / xlim
     max_tick = int(max(unique_days.keys()) + 10 / 10)
     step = int(max_tick / 10)
     intervals = [i for i in range(0, max_tick + step, step)]
-
     plt.xticks(intervals, intervals)
-
-    '''TODO
-    fix windows in relation to xticks, yticks'''
-
-    # formatting
     plt.xlim([-1, max((unique_days.keys())) + 1])
+
+    # yticks / ylim?
+    plt.ylim(-1, max([day for day in unique_days.values()]) * 1.1)
+
+    """TODO
+    fix windows in relation to xticks, yticks
+    """
+
+    # window -w
     args = get_argparse()
     if args.window:
         window = [int(x) for x in args.window.split(",")]
         plt.xlim(*window)
 
         w_dist = window[1] - window[0]
-        intervals = [int((w_dist/10)*i + window[0]) for i in range(11)]
+        intervals = [int((w_dist / 10) * i + window[0]) for i in range(11)]
         plt.xticks(intervals, intervals)
 
-    '''TODO
-    store prod sum (calculated already) in main
-    1 is a placeholder for velocity max, but one velocity value is inf
-    prod will never be negative
-    '''
-    plt.ylim(-1, max([day for day in unique_days.values()]) * 1.1)
+
+# prod_sum over time where time is spaced by day
+def plot(df: DataFrame, filename: str) -> None:
+    figure: Figure = plt.figure()
+
+    # data extraction
+    unique_days = {day: 0 for day in set(df["day_since_0"])}
+
+    for day in unique_days:
+        temp = df[df["day_since_0"] == day]
+        unique_days[day] = temp.sum(axis=0)["productivity"]
+
+    _format_window(figure)
 
     plt.ylabel("Productivity")
     plt.xlabel("Days Since First Commit")
     plt.title("Daily Productivity Sum Over Time")
 
-    plt.plot(unique_days.keys(),unique_days.values())
+    plt.plot(unique_days.keys(), unique_days.values())
     figure.savefig(filename)
 
-    '''TODO
+    """TODO
     could be organized much more efficiently
     try in future
         graphing straight from df
     using separate dicts so that you dont have to iterate as many times
-    '''
+    """
 
 
 def main():
