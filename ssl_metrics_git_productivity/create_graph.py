@@ -41,14 +41,12 @@ def get_argparse() -> Namespace:
 def plot(df: DataFrame, filename: str) -> None:
     figure: Figure = plt.figure()
 
-
     # data extraction
-    unique_days = {day:0 for day in set(df['day_since_0'])}
+    unique_days = {day: 0 for day in set(df["day_since_0"])}
 
     for day in unique_days:
-        temp = df[df['day_since_0'] == day]
-        unique_days[day] = (temp.sum(axis=0)['productivity'])
-
+        temp = df[df["day_since_0"] == day]
+        unique_days[day] = temp.sum(axis=0)["productivity"]
 
     # xticks
     max_tick = int(max(unique_days.keys()) + 10 / 10)
@@ -82,7 +80,7 @@ def plot(df: DataFrame, filename: str) -> None:
     plt.xlabel("Days Since First Commit")
     plt.title("Daily Productivity Sum Over Time")
 
-    plt.plot(unique_days.keys(),unique_days.values())
+    plt.plot(unique_days.keys(), unique_days.values())
     figure.savefig(filename)
 
     """TODO
