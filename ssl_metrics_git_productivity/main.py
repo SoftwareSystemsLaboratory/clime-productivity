@@ -2,8 +2,6 @@
 returns a prod file with calculated productivity"""
 
 import argparse
-import json
-from pprint import pprint as print
 
 import numpy as np
 import pandas as pd
@@ -15,33 +13,19 @@ def get_args():
         prog="SSL Metrics Git Productivity",
         usage="Calculates productivity measure of a git project.",
     )
-    ap.add_argument("--input", "-i", required=True, type=open, help="...")
-    # ap.add_argument("--graph", "-g", type=open, help="...")
+    ap.add_argument("--input", "-i", required=True, type=open, help="...",)
 
     args = ap.parse_args()
     return args
 
 
 def get_prod(df: DataFrame):
-    """returns the productivity of each commit as
-    prod = module_size / team effort
-    prod = delta_loc / elapsed time
-    """
-
     te = df["day_since_0"].max()
-
-    "calculates module_size as the absolute value of delta_loc"
     p = df["delta_loc"].apply(lambda x: abs(x) / te)
-
     df["productivity"] = p
 
 
 def get_velocity(df: DataFrame):
-    """returns the velocity of prod as
-    change in prod over change in time
-    calculates the sum of prod per dat since there are no hourly timestamps
-    """
-
     daily_prod = []
     delta_prod = []
     prod_t1 = 0
