@@ -1,63 +1,53 @@
-"""takes a loc file as an argument ...
-returns a prod file with calculated productivity"""
+from argparse import ArgumentParser, Namespace
 
-import argparse
-import json
-from pprint import pprint as print
-
-import numpy as np
 import pandas as pd
 from pandas import DataFrame
+from pandas.core.series import Series
 
 
-def get_args():
-    ap = argparse.ArgumentParser(
-        prog="SSL Metrics Git Productivity",
-        usage="Calculates productivity measure of a git project.",
+def get_args() -> Namespace:
+    ap: ArgumentParser = ArgumentParser(
+        prog="SSL Metrics Git Productivity Computer",
+        usage="Calculates productivity metric of a git project.",
+        description="Productivity is defined as |ΔLOC| / (Team Effort) where Team Effort is the total elapsed time between commits.",
     )
-    ap.add_argument("--input", "-i", required=True, type=open, help="...")
-    # ap.add_argument("--graph", "-g", type=open, help="...")
+    ap.add_argument(
+        "-i",
+        "--input",
+        required=True,
+        type=open,
+        help="JSON file containing data formatted by ssl-metrics-git-commits-loc-extract",
+    )
+    ap.add_argument(
+        "-o",
+        "--output",
+        required=True,
+        type=open,
+        help="JSON file containing data outputted by the application",
+    )
 
-    args = ap.parse_args()
+    args: Namespace = ap.parse_args()
     return args
 
 
-def get_prod(df: DataFrame):
-    """returns the productivity of each commit as
-    prod = module_size / team effort
-    prod = delta_loc / elapsed time
-    """
-
-    te = df["day_since_0"].max()
-
-    "calculates module_size as the absolute value of delta_loc"
-    p = df["delta_loc"].apply(lambda x: abs(x) / te)
-
+def get_prod(df: DataFrame) -> None:
+    te: int = df["day_since_0"].max()
+    p: Series = df["delta_loc"].apply(lambda x: abs(x) / te)
+    print(type(p))
     df["productivity"] = p
 
 
 def main():
-
     args = get_args()
+
+    if args.input[-5:] != ".json":
+        print("Input must be a .json file")
+        quit(1)
 
     df: DataFrame = pd.read_json(args.input)
     get_prod(df)
-    get_velocity(df)
 
-    "transpose to look pretty"
-    "dont transpose to be effective"
-    df.to_json("prod.json")
-    # df.T.to_json("prod.json")
-
-    output = [{'productivity':p, 'hash':h, 'day_since_0':d} for p,h,d in zip(prod,hash,days)]
-    write(output)
+    df.to_json(args.output)
 
 if __name__ == "__main__":
     main()
-
-""" TODO
-prod per member as {author email, name}
-    prod per member graphed on the same chart
-
-graphs of acceleration of prod
-"""
