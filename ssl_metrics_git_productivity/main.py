@@ -16,7 +16,7 @@ def get_args() -> Namespace:
         "--input",
         required=True,
         type=open,
-        help="JSON file containing data formatted by ssl-metrics-git-commits-loc extract",
+        help="JSON file containing data formatted by ssl-metrics-git-commits-loc-extract",
     )
     ap.add_argument(
         "-o",
