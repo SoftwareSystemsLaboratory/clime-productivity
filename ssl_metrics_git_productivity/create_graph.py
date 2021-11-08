@@ -81,8 +81,8 @@ def plot(df: DataFrame, filename: str) -> None:
     '''
     plt.ylim([df['velocity'].min()*1.1, max(max([day['prod'] for day in unique_days.values()]) , df['velocity'].max()) * 1.1])
 
-    plt.ylabel("prod")
-    plt.xlabel("day_since_0")
+    plt.ylabel("Productivity")
+    plt.xlabel("Days Since First Commit")
     plt.title("Daily Productivity Sum Over Time")
 
     plt.plot(unique_days.keys(), [day['prod'] for day in unique_days.values()], linewidth=3)
