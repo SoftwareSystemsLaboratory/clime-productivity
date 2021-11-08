@@ -36,6 +36,50 @@ def get_prod(df: DataFrame):
     df["productivity"] = p
 
 
+def get_velocity(df: DataFrame):
+    """returns the velocity of prod as
+    change in prod over change in time
+    calculates the sum of prod per dat since there are no hourly timestamps
+    """
+
+    daily_prod = []
+    delta_prod = []
+    prod_t1 = 0
+
+    delta_time = []
+    day_t1 = 0
+
+    "does days need to be sorted??"
+    days = set(df["day_since_0"])
+
+    for day in days:
+        temp = df[df["day_since_0"] == day]
+        prod = temp["productivity"].sum()
+
+        delta_prod += [prod - prod_t1 for i in range(len(temp.T.columns))]
+        prod_t1 = prod
+
+        delta_time += [day - day_t1 for i in range(len(temp.T.columns))]
+        day_t1 = day
+
+    df["delta_prod"] = delta_prod
+    df["delta_time"] = delta_time
+
+    df["velocity"] = df["delta_prod"] / df["delta_time"]
+
+    """
+    calculations:
+        daily prod
+        change in prod
+        change in time
+        dprod / dtime
+
+        velocity = daily velocity
+        dvelocity
+        dvelocity / dtime
+    """
+
+
 def main():
 
     args = get_args()
