@@ -60,8 +60,8 @@ def plot(df: DataFrame, filename: str) -> None:
 
     plt.xticks(intervals, intervals)
 
-    '''TODO
-    fix windows in relation to xticks, yticks'''
+    """TODO
+    fix windows in relation to xticks, yticks"""
 
     # formatting
     plt.xlim([-1, max((unique_days.keys())) + 1])
@@ -71,37 +71,52 @@ def plot(df: DataFrame, filename: str) -> None:
         plt.xlim(*window)
 
         w_dist = window[1] - window[0]
-        intervals = [int((w_dist/10)*i + window[0]) for i in range(11)]
+        intervals = [int((w_dist / 10) * i + window[0]) for i in range(11)]
         plt.xticks(intervals, intervals)
 
-    '''TODO
+    """TODO
     store prod sum (calculated already) in main
     1 is a placeholder for velocity max, but one velocity value is inf
     prod will never be negative
-    '''
-    plt.ylim([df['velocity'].min()*1.1, max(max([day['prod'] for day in unique_days.values()]) , df['velocity'].max()) * 1.1])
+    """
+    plt.ylim(
+        [
+            df["velocity"].min() * 1.1,
+            max(
+                max([day["prod"] for day in unique_days.values()]), df["velocity"].max()
+            )
+            * 1.1,
+        ]
+    )
 
     plt.ylabel("prod")
     plt.xlabel("day_since_0")
     plt.title("Daily Productivity Sum Over Time")
 
-    plt.plot(unique_days.keys(), [day['prod'] for day in unique_days.values()], linewidth=3)
-    plt.plot(unique_days.keys(), [day['velocity'] for day in unique_days.values()], color='red', linewidth=0.75)
+    plt.plot(
+        unique_days.keys(), [day["prod"] for day in unique_days.values()], linewidth=3
+    )
+    plt.plot(
+        unique_days.keys(),
+        [day["velocity"] for day in unique_days.values()],
+        color="red",
+        linewidth=0.75,
+    )
 
     figure.savefig(filename)
 
-    '''TODO
+    """TODO
     could be organized much more efficiently
     try in future
         graphing straight from df
     using separate dicts so that you dont have to iterate as many times
-    '''
+    """
 
-    '''TODO
+    """TODO
     the graphs should depict velocity = 0 when prod is at a peak
     how to achieve??
     regression modeling?
-    '''
+    """
 
 
 def main():
