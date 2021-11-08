@@ -93,6 +93,8 @@ def main():
     df.to_json("prod.json")
     # df.T.to_json("prod.json")
 
+    output = [{'productivity':p, 'hash':h, 'day_since_0':d} for p,h,d in zip(prod,hash,days)]
+    write(output)
 
 if __name__ == "__main__":
     main()
