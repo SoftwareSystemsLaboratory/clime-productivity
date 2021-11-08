@@ -75,40 +75,14 @@ def plot(df: DataFrame, filename: str) -> None:
     store prod sum (calculated already) in main
     1 is a placeholder for velocity max, but one velocity value is inf
     prod will never be negative
-<<<<<<< HEAD
     """
-    plt.ylim(
-        [
-            df["velocity"].min() * 1.1,
-            max(
-                max([day["prod"] for day in unique_days.values()]), df["velocity"].max()
-            )
-            * 1.1,
-        ]
-    )
-=======
-    '''
     plt.ylim(-1, max([day for day in unique_days.values()]) * 1.1)
->>>>>>> 09a32f644aa1a0e9e628d92c9d4b150e03c45dc7
 
     plt.ylabel("Productivity")
     plt.xlabel("Days Since First Commit")
     plt.title("Daily Productivity Sum Over Time")
 
-<<<<<<< HEAD
-    plt.plot(
-        unique_days.keys(), [day["prod"] for day in unique_days.values()], linewidth=3
-    )
-    plt.plot(
-        unique_days.keys(),
-        [day["velocity"] for day in unique_days.values()],
-        color="red",
-        linewidth=0.75,
-    )
-
-=======
     plt.plot(unique_days.keys(),unique_days.values())
->>>>>>> 09a32f644aa1a0e9e628d92c9d4b150e03c45dc7
     figure.savefig(filename)
 
     """TODO
@@ -118,15 +92,6 @@ def plot(df: DataFrame, filename: str) -> None:
     using separate dicts so that you dont have to iterate as many times
     """
 
-<<<<<<< HEAD
-    """TODO
-    the graphs should depict velocity = 0 when prod is at a peak
-    how to achieve??
-    regression modeling?
-    """
-
-=======
->>>>>>> 09a32f644aa1a0e9e628d92c9d4b150e03c45dc7
 
 def main():
     args: Namespace = get_argparse()
