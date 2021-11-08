@@ -41,17 +41,14 @@ def get_argparse() -> Namespace:
 def plot(df: DataFrame, filename: str) -> None:
     figure: Figure = plt.figure()
 
+
     # data extraction
-
-    days = set(df["day_since_0"])
-    unique_days = {day: 0 for day in days}
-
-    unique_days = {day: {"prod": 0, "velocity": 0} for day in days}
+    unique_days = {day:0 for day in set(df['day_since_0'])}
 
     for day in unique_days:
-        temp = df[df["day_since_0"] == day]
-        unique_days[day]["prod"] = temp["productivity"].sum()
-        unique_days[day]["velocity"] = temp["velocity"].max()
+        temp = df[df['day_since_0'] == day]
+        unique_days[day] = (temp.sum(axis=0)['productivity'])
+
 
     # xticks
     max_tick = int(max(unique_days.keys()) + 10 / 10)
@@ -79,15 +76,13 @@ def plot(df: DataFrame, filename: str) -> None:
     1 is a placeholder for velocity max, but one velocity value is inf
     prod will never be negative
     '''
-    plt.ylim([df['velocity'].min()*1.1, max(max([day['prod'] for day in unique_days.values()]) , df['velocity'].max()) * 1.1])
+    plt.ylim(-1, max([day for day in unique_days.values()]) * 1.1)
 
     plt.ylabel("Productivity")
     plt.xlabel("Days Since First Commit")
     plt.title("Daily Productivity Sum Over Time")
 
-    plt.plot(unique_days.keys(), [day['prod'] for day in unique_days.values()], linewidth=3)
-    plt.plot(unique_days.keys(), [day['velocity'] for day in unique_days.values()], color='red', linewidth=0.75)
-
+    plt.plot(unique_days.keys(),unique_days.values())
     figure.savefig(filename)
 
     '''TODO
@@ -95,12 +90,6 @@ def plot(df: DataFrame, filename: str) -> None:
     try in future
         graphing straight from df
     using separate dicts so that you dont have to iterate as many times
-    '''
-
-    '''TODO
-    the graphs should depict velocity = 0 when prod is at a peak
-    how to achieve??
-    regression modeling?
     '''
 
 
