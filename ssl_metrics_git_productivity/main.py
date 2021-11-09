@@ -41,7 +41,7 @@ def get_prod(df: DataFrame) -> DataFrame:
         productivity: float = df[df["day_since_0"] == day]["delta_loc"].sum() / divedend
 
         temp["days_since_0"] = day
-        temp["bus_factor"] = productivity
+        temp["productivity"] = productivity
 
         data.append(temp)
 
