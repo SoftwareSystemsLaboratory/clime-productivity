@@ -1,8 +1,7 @@
 from argparse import ArgumentParser, Namespace
 
 import pandas as pd
-from pandas import DataFrame
-from pandas.core.series import Series
+from pandas import DataFrame, Series
 
 
 def get_args() -> Namespace:
@@ -15,17 +14,16 @@ def get_args() -> Namespace:
         "-i",
         "--input",
         required=True,
-        type=open,
+        type=str,
         help="JSON file containing data formatted by ssl-metrics-git-commits-loc-extract",
     )
     ap.add_argument(
         "-o",
         "--output",
         required=True,
-        type=open,
+        type=str,
         help="JSON file containing data outputted by the application",
     )
-
     args: Namespace = ap.parse_args()
     return args
 
@@ -33,14 +31,12 @@ def get_args() -> Namespace:
 def get_prod(df: DataFrame) -> None:
     te: int = df["day_since_0"].max()
     p: Series = df["delta_loc"].apply(lambda x: abs(x) / te)
-    print(type(p))
     df["productivity"] = p
-
 
 def main():
     args = get_args()
 
-    if args.input[-5:] != ".json":
+    if args.input[-5::] != ".json":
         print("Input must be a .json file")
         quit(1)
 
