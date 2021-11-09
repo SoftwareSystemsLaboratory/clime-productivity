@@ -1,7 +1,6 @@
 from argparse import ArgumentParser, Namespace
 from operator import itemgetter
 from os import path
-from pprint import pprint
 
 import matplotlib.pyplot as plt
 import numpy as np
