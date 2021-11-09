@@ -199,13 +199,28 @@ def plot(df: DataFrame, args: Namespace) -> None:
 
 
 def main():
-    args: Namespace = get_argparse()
+    args: Namespace = getArgparse()
 
     if args.input[-5::] != ".json":
         print("Invalid input file type. Input file must be JSON")
         quit(1)
+    if args.x_window_min < 0:
+        print("Invalid x window min. X window min >= 0")
+        quit(2)
+
+    xLabel: str = "Days Since Initial Commit"
+    yLabel: str = "Productivity"
+    title: str = "Productivity / Days"
 
     df: DataFrame = pandas.read_json(args.input)
+
+    if args.x_window_max <= -1:
+        x: list = df["days_since_0"].to_list()[args.x_window_min:]
+        y: list = df["productivity"].tolist()[args.x_window_min:]
+    else:
+        x: list = df["days_since_0"].to_list()[args.x_window_min:args.x_window_max + 1]
+        y: list = df["productivity"].tolist()[args.x_window_min:args.x_window_max + 1]
+
 
     plot(df, args)
 
