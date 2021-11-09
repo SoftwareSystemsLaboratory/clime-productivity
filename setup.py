@@ -49,9 +49,10 @@ setup(
     ],
     python_requires=">=3.9",
     install_requires=[
-        "numpy",
-        "matplotlib",
-        "pandas",
+        "matplotlib>=3.4.3",
+        "numpy>=1.21.2",
+        "pandas>=1.3.3",
+        "scikit-learn>=1.0.1",
     ],
     entry_points={
         "console_scripts": [
