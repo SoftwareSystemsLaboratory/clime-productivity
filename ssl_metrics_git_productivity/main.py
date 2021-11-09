@@ -28,10 +28,25 @@ def get_args() -> Namespace:
     return args
 
 
-def get_prod(df: DataFrame) -> None:
-    te: int = df["day_since_0"].max()
-    p: Series = df["delta_loc"].apply(lambda x: abs(x) / te)
-    df["productivity"] = p
+def get_prod(df: DataFrame) -> DataFrame:
+    divedend: int = df["day_since_0"].max()
+    daysSince0: Series = df["day_since_0"].unique()
+
+    data: list = []
+
+    day: int
+    for day in range(daysSince0.max() + 1):
+        temp: dict = {}
+
+        productivity: float = df[df["day_since_0"] == day]["delta_loc"].sum() / divedend
+
+        temp["days_since_0"] = day
+        temp["bus_factor"] = productivity
+
+        data.append(temp)
+
+    return DataFrame(data)
+
 
 def main():
     args = get_args()
@@ -40,10 +55,10 @@ def main():
         print("Input must be a .json file")
         quit(1)
 
-    df: DataFrame = pd.read_json(args.input)
-    get_prod(df)
+    dfIn: DataFrame = pd.read_json(args.input)
+    dfOut: DataFrame = get_prod(df=dfIn)
 
-    df.to_json(args.output)
+    dfOut.to_json(args.output)
 
 
 if __name__ == "__main__":
