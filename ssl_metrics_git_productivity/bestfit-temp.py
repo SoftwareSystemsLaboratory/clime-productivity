@@ -1,5 +1,5 @@
 def __findBestFitLine(x: list, y: list, maximumDegrees: int) -> tuple:
-    'returns the closest fit polynomial within the range of maximum degrees'
+    "returns the closest fit polynomial within the range of maximum degrees"
 
     # https://www.w3schools.com/Python/python_ml_polynomial_regression.asp
     data: list = []
@@ -14,11 +14,18 @@ def __findBestFitLine(x: list, y: list, maximumDegrees: int) -> tuple:
     return max(data, key=itemgetter(0))
 
 
-def _graphFigure(repositoryName: str, xLabel: str, yLabel: str, title: str,
-    x: list, y: list, maximumDegree: int) -> None:
+def _graphFigure(
+    repositoryName: str,
+    xLabel: str,
+    yLabel: str,
+    title: str,
+    x: list,
+    y: list,
+    maximumDegree: int,
+) -> None:
 
     figure: Figure = plt.figure()
-    plt.suptitle('subtitle')
+    plt.suptitle("subtitle")
 
     # Data
     plt.subplot(2, 2, 1)
@@ -59,7 +66,7 @@ def _graphFigure(repositoryName: str, xLabel: str, yLabel: str, title: str,
     plt.plot(line, accelerationModel(line))
     plt.tight_layout()
 
-    figure.savefig('prod.png')
+    figure.savefig("prod.png")
     figure.clf()
 
 

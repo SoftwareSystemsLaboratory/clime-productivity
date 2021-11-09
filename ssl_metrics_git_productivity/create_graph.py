@@ -90,8 +90,6 @@ def _format_window(figure: Figure, unique_days: dict) -> None:
 
 
 def __findBestFitLine(x: list, y: list, maximumDegrees: int) -> tuple:
-    "returns the closest fit polynomial within the range of maximum degrees"
-
     # https://www.w3schools.com/Python/python_ml_polynomial_regression.asp
     data: list = []
     degree: int
@@ -113,7 +111,7 @@ def _graphFigure(
     x: list,
     y: list,
     maximumDegree: int,
-    filename: str
+    filename: str,
 ) -> None:
 
     figure: Figure = plt.figure()
@@ -160,7 +158,7 @@ def _graphFigure(
     plt.plot(line, accelerationModel(line))
     plt.tight_layout()
 
-    figure.savefig("subplot.png")
+    figure.savefig(filename)
     figure.clf()
 
 
@@ -187,8 +185,6 @@ def plot(df: DataFrame, args: Namespace) -> None:
     #     figure.clf()
     # else:
 
-    "logic ... if -d then derive else do just the regular prod graph"
-
     _graphFigure(
         repositoryName=args.repository_name,
         xLabel="Days Since First Commit",
@@ -197,7 +193,7 @@ def plot(df: DataFrame, args: Namespace) -> None:
         x=[key for key in unique_days.keys()],
         y=[val for val in unique_days.values()],
         maximumDegree=args.maximum_degree_polynomial,
-        filename: str=args.output,
+        filename=args.output,
     )
 
 

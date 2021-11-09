@@ -49,5 +49,6 @@ def main():
 
     df.to_json(args.output)
 
+
 if __name__ == "__main__":
     main()
