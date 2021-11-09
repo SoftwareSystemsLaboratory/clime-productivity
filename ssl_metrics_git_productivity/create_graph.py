@@ -10,10 +10,11 @@ from pandas import DataFrame
 from sklearn.metrics import r2_score
 
 
-def get_argparse() -> Namespace:
+def getArgparse() -> Namespace:
     parser: ArgumentParser = ArgumentParser(
-        prog="Convert Output",
-        usage="This program converts a JSON file into various different formats.",
+        prog="ssl-metrics-git-bus-factor Graph Generator",
+        usage="This is a proof of concept demonstrating that it is possible to use git to compute the bus factor of a project.",
+        description="The only required arguement of this program is -i/--input. The default action is to do nothing until a filename for the graph is inputted."
     )
     parser.add_argument(
         "-i",
@@ -25,39 +26,39 @@ def get_argparse() -> Namespace:
     parser.add_argument(
         "-o",
         "--output",
-        help="The filename to output the graph to",
-        type=str,
-        required=True,
-    )
-    parser.add_argument(
-        "-w",
-        "--window",
-        help="the window of days to be graphed: denoted x1,x2",
+        help="The filename to output the bus factor graph to",
         type=str,
         required=False,
     )
     parser.add_argument(
         "-m",
-        "--maximum_degree_polynomial",
+        "--maximum-degree-polynomial",
         help="Estimated maximum degree of polynomial",
         type=int,
         required=False,
-        default=15,
+        default=15
     )
     parser.add_argument(
         "-r",
-        "--repository_name",
+        "--repository-name",
         help="Name of the repository that is being analyzed",
         type=str,
         required=False,
     )
-    # parser.add_argument(
-    #     "-d",
-    #     "--derive",
-    #     help="Flag to indicate derivation",
-    #     type=open, # ??? what type is a flag argument
-    #     required=False,
-    # )
+    parser.add_argument(
+        "--x-window-min",
+        help="The smallest x value that will be plotted",
+        type=int,
+        required=False,
+        default=0
+    )
+    parser.add_argument(
+        "--x-window-max",
+        help="The largest x value that will be plotted",
+        type=int,
+        required=False,
+        default=-1
+    )
     return parser.parse_args()
 
 
