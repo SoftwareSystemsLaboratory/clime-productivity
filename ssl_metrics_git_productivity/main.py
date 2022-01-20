@@ -29,8 +29,8 @@ def get_args() -> Namespace:
 
 
 def get_prod(df: DataFrame) -> DataFrame:
-    divedend: int = df["days_since_0"].max()
-    daysSince0: Series = df["days_since_0"].unique()
+    divedend: int = df["day_since_0"].max()
+    daysSince0: Series = df["day_since_0"].unique()
 
     data: list = []
 
@@ -38,7 +38,9 @@ def get_prod(df: DataFrame) -> DataFrame:
     for day in range(daysSince0.max() + 1):
         temp: dict = {}
 
-        productivity: float = df[df["days_since_0"] == day]["delta_loc"].abs().sum() / divedend
+        productivity: float = (
+            df[df["day_since_0"] == day]["delta_loc"].abs().sum() / divedend
+        )
 
         temp["days_since_0"] = day
         temp["productivity"] = productivity
