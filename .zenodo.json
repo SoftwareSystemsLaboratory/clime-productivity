@@ -1,6 +1,6 @@
 {
     "upload_type": "software",
-    "title": "SoftwareSystemsLaboratory/ssl-metrics-git-productivity",
+    "title": "SoftwareSystemsLaboratory/ssl-metrics",
     "creators": [
         {
         "name": "Hyatt, Matt",
@@ -18,7 +18,7 @@
         "orcid": "0000-0002-0452-5571"
         }
     ],
-    "description": "This is a proof of concept demonstrating that it is possible to use git commits to calculate the productivity of the team of the repository.",
+    "description": "A helper package to install all Software Systems Laboratory Metrics tools",
     "access_right": "open",
     "license": "BSD-3-Clause",
     "prereserve_doi": true,
