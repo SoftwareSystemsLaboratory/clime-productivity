@@ -30,7 +30,7 @@ def calculateProductivity(df: DataFrame) -> DataFrame:
 def main():
     args = mainArgs()
 
-    df: DataFrame = pandas.read_json(args.input)
+    df: DataFrame = pandas.read_json(args.input).T
     calculateProductivity(df).to_json(args.output)
 
 
