@@ -1,36 +1,12 @@
-from argparse import ArgumentParser, Namespace
-
-import pandas as pd
+import pandas
 from pandas import DataFrame, Series
 
-
-def get_args() -> Namespace:
-    ap: ArgumentParser = ArgumentParser(
-        prog="SSL Metrics Git Productivity Computer",
-        usage="Calculates productivity metric of a git project.",
-        description="Productivity is defined as |ΔLOC| / (Team Effort) where Team Effort is the total elapsed time between commits.",
-    )
-    ap.add_argument(
-        "-i",
-        "--input",
-        required=True,
-        type=str,
-        help="JSON file containing data formatted by ssl-metrics-git-commits-loc-extract",
-    )
-    ap.add_argument(
-        "-o",
-        "--output",
-        required=True,
-        type=str,
-        help="JSON file containing data outputted by the application",
-    )
-    args: Namespace = ap.parse_args()
-    return args
+from ssl_metrics_git_productivity.args import mainArgs
 
 
-def get_prod(df: DataFrame) -> DataFrame:
-    divedend: int = df["days_since_0"].max()
-    daysSince0: Series = df["days_since_0"].unique()
+def calculateProductivity(df: DataFrame) -> DataFrame:
+    divedend: int = df["author_days_since_0"].max()
+    daysSince0: Series = df["author_days_since_0"].unique()
 
     data: list = []
 
@@ -39,7 +15,8 @@ def get_prod(df: DataFrame) -> DataFrame:
         temp: dict = {}
 
         productivity: float = (
-            df[df["days_since_0"] == day]["delta_loc"].abs().sum() / divedend
+            df[df["author_days_since_0"] == day]["delta_lines_of_code"].abs().sum()
+            / divedend
         )
 
         temp["days_since_0"] = day
@@ -51,16 +28,10 @@ def get_prod(df: DataFrame) -> DataFrame:
 
 
 def main():
-    args = get_args()
+    args = mainArgs()
 
-    if args.input[-5::] != ".json":
-        print("Input must be a .json file")
-        quit(1)
-
-    dfIn: DataFrame = pd.read_json(args.input)
-    dfOut: DataFrame = get_prod(df=dfIn)
-
-    dfOut.to_json(args.output)
+    df: DataFrame = pandas.read_json(args.input)
+    calculateProductivity(df).to_json(args.output)
 
 
 if __name__ == "__main__":
