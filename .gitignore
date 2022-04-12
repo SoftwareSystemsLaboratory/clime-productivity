@@ -1,9 +1,3 @@
-# ignore prod graphs and data
-*.png
-*.json
-!.zenodo.json
-.vscode
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -133,3 +127,11 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+*.png
+*.json
+!.zenodo.json
+.vscode
+
+*.bash
+*.pdf

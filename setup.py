@@ -68,7 +68,7 @@ setup(
     entry_points={
         "console_scripts": [
             "ssl-metrics-git-productivity-compute = ssl_metrics_git_productivity.main:main",
-            "ssl-metrics-git-productivity-graph = ssl_metrics_git_productivity.create_graph:main",
+            "ssl-metrics-git-productivity-graph = ssl_metrics_git_productivity.graph:main",
         ]
     },
 )
