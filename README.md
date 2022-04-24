@@ -34,29 +34,45 @@ You can install this tool with one of the following one liners:
 `clime-productivity-compute -h`
 
 ``` shell
+usage: CLIME Repository Productivity Calculator [-h] [-i INPUT] [-o OUTPUT]
+
+A tool to calculate the productivity of a Git repository where productivity is
+defined as: |ΔLOC| / (Repository Age)
+
 options:
   -h, --help            show this help message and exit
   -i INPUT, --input INPUT
-                        JSON file containing data formatted by ssl-metrics-git-commits-loc-extract
+                        Commits JSON file. DEFAULT: ./commits_loc.json
   -o OUTPUT, --output OUTPUT
-                        JSON file containing data outputted by the application
+                        Output JSON file. DEFAULT: ./productivity.json
+
+Author(s): Nicholas M. Synovic, Matthew Hyatt, George K. Thiruvathukal
 ```
 
 `clime-productivity-graph -h`
 
 ``` shell
+usage: CLIME Productivity Grapher [-h] [-i INPUT] [-o OUTPUT] [--type TYPE]
+                                  [--title TITLE] [--x-label X_LABEL]
+                                  [--y-label Y_LABEL]
+                                  [--stylesheet STYLESHEET] [-v]
+
+A tool to graph the productivity of a repository
+
 options:
   -h, --help            show this help message and exit
   -i INPUT, --input INPUT
-                        The input data file that will be read to create the graphs
+                        JSON export from CLIME GitHub Issue Density Compute.
+                        DEFAULT: ./productivity.json
   -o OUTPUT, --output OUTPUT
-                        The filename to output the bus factor graph to
-  -m MAXIMUM_DEGREE_POLYNOMIAL, --maximum-degree-polynomial MAXIMUM_DEGREE_POLYNOMIAL
-                        Estimated maximum degree of polynomial
-  -r REPOSITORY_NAME, --repository-name REPOSITORY_NAME
-                        Name of the repository that is being analyzed
-  --x-window-min X_WINDOW_MIN
-                        The smallest x value that will be plotted
-  --x-window-max X_WINDOW_MAX
-                        The largest x value that will be plotted
+                        Filename of the graph. DEFAULT: ./productivity.pdf
+  --type TYPE           Type of figure to plot. DEFAULT: line
+  --title TITLE         Title of the figure. DEFAULT: ""
+  --x-label X_LABEL     X axis label of the figure. DEFAULT: ""
+  --y-label Y_LABEL     Y axis label of the figure. DEFAULT: ""
+  --stylesheet STYLESHEET
+                        Filepath of matplotlib stylesheet to use. DEFAULT: ""
+  -v, --version         Display version of the tool
+
+Author(s): Nicholas M. Synovic, Matthew Hyatt, George K. Thiruvathukal
 ```
