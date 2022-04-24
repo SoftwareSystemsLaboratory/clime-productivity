@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import pandas
 from pandas import DataFrame
 
-from ssl_metrics_git_productivity.args import graphArgs
+from clime_productivity.args import graphArgs
 
 
 def plot(

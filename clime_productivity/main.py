@@ -1,8 +1,8 @@
 import pandas
 from pandas import DataFrame, Series
 
-from ssl_metrics_git_productivity.args import mainArgs
-
+from clime_productivity.args import mainArgs
+from clime_productivity.version import version
 
 def calculateProductivity(df: DataFrame) -> DataFrame:
     divedend: int = df["author_days_since_0"].max()
@@ -29,6 +29,10 @@ def calculateProductivity(df: DataFrame) -> DataFrame:
 
 def main():
     args = mainArgs()
+
+    if args.version:
+        print(f"clime-productivity version {version()}")
+        quit(0)
 
     df: DataFrame = pandas.read_json(args.input).T
     calculateProductivity(df).to_json(args.output)

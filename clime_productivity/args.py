@@ -91,5 +91,12 @@ def graphArgs() -> Namespace:
         required=False,
         default="",
     )
+    parser.add_argument(
+        "-v",
+        "--version",
+        help="Display version of the tool",
+        action="store_true",
+        default=False,
+    )
 
     return parser.parse_args()
