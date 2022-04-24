@@ -133,5 +133,4 @@ dmypy.json
 !.zenodo.json
 .vscode
 
-*.bash
 *.pdf
