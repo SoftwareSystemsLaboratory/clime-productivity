@@ -29,6 +29,13 @@ def mainArgs() -> Namespace:
         type=str,
         default="productivity.json",
     )
+    parser.add_argument(
+        "-v",
+        "--version",
+        help="Display version of the tool",
+        action="store_true",
+        default=False,
+    )
 
     return parser.parse_args()
 
