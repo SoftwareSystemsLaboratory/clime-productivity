@@ -4,6 +4,7 @@ from pandas import DataFrame, Series
 from clime_productivity.args import mainArgs
 from clime_productivity.version import version
 
+
 def calculateProductivity(df: DataFrame) -> DataFrame:
     divedend: int = df["author_days_since_0"].max()
     daysSince0: Series = df["author_days_since_0"].unique()
