@@ -35,7 +35,7 @@ def main():
         quit(0)
 
     df: DataFrame = pandas.read_json(args.input).T
-    calculateProductivity(df).to_json(args.output)
+    calculateProductivity(df).to_json(args.output, indent=4)
 
 
 if __name__ == "__main__":
