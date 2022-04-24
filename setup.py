@@ -84,7 +84,6 @@ setup(
         "numpy",
         "matplotlib",
         "pandas",
-        "scikit-learn",
     ],
     entry_points={
         "console_scripts": [
