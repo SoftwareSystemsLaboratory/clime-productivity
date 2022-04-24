@@ -1,5 +1,8 @@
 # CLIME Productivity
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6480656.svg)](https://doi.org/10.5281/zenodo.6480656)
+[![Release Project](https://github.com/SoftwareSystemsLaboratory/clime-productivity/actions/workflows/release.yml/badge.svg)](https://github.com/SoftwareSystemsLaboratory/clime-productivity/actions/workflows/release.yml)
+
 > A tool to calculate the productivity of a Git repository
 
 ## Table of Contents
