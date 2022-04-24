@@ -31,7 +31,7 @@ def main():
     args = mainArgs()
 
     if args.version:
-        print(f"clime-productivity version {version()}")
+        print(f"clime-productivity-compute version {version()}")
         quit(0)
 
     df: DataFrame = pandas.read_json(args.input).T

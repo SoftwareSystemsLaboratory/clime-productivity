@@ -5,6 +5,7 @@ import pandas
 from pandas import DataFrame
 
 from clime_productivity.args import graphArgs
+from clime_productivity.version import version
 
 
 def plot(
@@ -38,6 +39,10 @@ def plot(
 
 def main() -> None:
     args: Namespace = graphArgs()
+
+    if args.version:
+        print(f"clime-productivity-graph version {version()}")
+        quit(0)
 
     df: DataFrame = pandas.read_json(args.input)
 
